@@ -3,6 +3,7 @@ Tic Tac Toe Player
 """
 
 import math
+import copy
 
 X = "X"
 O = "O"
@@ -59,17 +60,18 @@ def result(board, action):
     Returns the board that results from making move (i, j) on the board.
     """
 
-    board2 = [[i, j if [i][j] != action else X] for i, j in board]
+    new = copy.deepcopy(board)
 
-    #board2 = board.remove(action)
+    for i, x in enumerate(new):
+        for j, a in enumerate(x):
+            if (i,j) == action and a != EMPTY:
+                raise Exception("selected cell is already taken")
+            elif (i,j) == action and player(board) == X:
+                new[i][j] = X
+            elif (i,j) == action and player(board) == O:
+                new[i][j] = O
 
-    #if player(board) = X:
-        
-    #    board.insert([i,j],X)
-    
-    print(board)
-    print(board2)
-    return board2
+    return new
 
 
 def winner(board):
