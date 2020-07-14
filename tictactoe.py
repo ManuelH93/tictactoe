@@ -90,7 +90,7 @@ def winner(board):
     # Create variable to indicate who is winning
     winner = None
 
-    # CHeck if one player has three in a row
+    # Ceck if one player has three in a row
     for a in player:
         # Diagonals
         if board[0][0] == a and board[1][1] == a and board[2][2] == a:
@@ -119,7 +119,26 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    raise NotImplementedError
+    # Create variable to indicate if game is over
+    game_over = False
+
+    # Check if there are still empty cells left
+    empty_cells = 0
+
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == EMPTY:
+                empty_cells += 1
+
+    # Check if empty cells left or player has won
+    if empty_cells == 0:
+        game_over = True
+    elif winner(board) == None:
+        game_over = False
+    else:
+        game_over = True
+
+    return game_over
 
 
 def utility(board):
