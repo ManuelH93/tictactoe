@@ -23,9 +23,12 @@ def player(board):
     """
     Returns player who has the next turn on a board.
     """
+    
+    # Start counter for number of moves already made
     num_X = 0
     num_O = 0
 
+    # Check each cell to count moves of each player
     for i in range(3):
         for j in range(3):
             if board[i][j] == X:
@@ -33,8 +36,8 @@ def player(board):
             elif board[i][j] == O:
                 num_O += 1
 
+    # Determine next player who has the next turn.
     if num_X > num_O:
-        print(O)
         return O  
     else:
         return X
@@ -45,8 +48,10 @@ def actions(board):
     Returns set of all possible actions (i, j) available on the board.
     """
 
+    # Initialize set to collect all empty cells 
     moves = set()
 
+    # Add all empty cells to set
     for i in range(3):
         for j in range(3):
             if board[i][j] == EMPTY:
@@ -59,9 +64,10 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-
+    # Create deepcopy of existing board
     new = copy.deepcopy(board)
 
+    # Make move on new board after checking whose turn it is
     for i, x in enumerate(new):
         for j, a in enumerate(x):
             if (i,j) == action and a != EMPTY:
