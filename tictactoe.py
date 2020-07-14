@@ -84,7 +84,35 @@ def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    raise NotImplementedError
+    # Crate list containing both players to loop through. 
+    player = (X,O)
+
+    # Create variable to indicate who is winning
+    winner = None
+
+    # CHeck if one player has three in a row
+    for a in player:
+        # Diagonals
+        if board[0][0] == a and board[1][1] == a and board[2][2] == a:
+            winner = a
+        elif board[2][0] == a and board[1][1] == a and board[0][2] == a:
+            winner = a
+        # Horizontals
+        elif board[0][0] == a and board[0][1] == a and board[0][2] == a:
+            winner = a
+        elif board[1][0] == a and board[1][1] == a and board[1][2] == a:
+            winner = a
+        elif board[2][0] == a and board[2][1] == a and board[2][2] == a:
+            winner = a
+        # Verticals
+        elif board[0][0] == a and board[1][0] == a and board[2][0] == a:
+            winner = a
+        elif board[0][1] == a and board[1][1] == a and board[2][1] == a:
+            winner = a
+        elif board[0][2] == a and board[1][2] == a and board[2][2] == a:
+            winner = a
+        
+    return winner
 
 
 def terminal(board):
