@@ -163,30 +163,63 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    raise NotImplementedError
+    if terminal(board) == True:
+        return None
+    elif player(board) == X:
+        return maxaction(board)
+    elif player(board) == O:
+        return minaction(board)
 
 def maxvalue(board):
     """
-    MAXVALUE picks action in ACTIONS(board) that produces highest value of MINVALUE(RESULT(board, action))
+    MAXVALUE returns maximum utility that can result from picking action in ACTIONS(board).
     """
-
     if terminal(board) == True:
         return(utility(board))
-    
     v = float("-inf")
+    #@MH: Could do pruning by checking if value can result in higher value?
     for a in actions(board):
         v = max(v, minvalue(result(board, a)))
     return(v)
 
 def minvalue(board):
     """
-    MINVALUE picks action in ACTIONS(board) that produces lowest value of MAXVALUE(RESULT(board, action))
+    MINVALUE returns minimum utility that can result from picking action in ACTIONS(board).
     """
-   
     if terminal(board) == True:
         return(utility(board))
-    
     v = float("inf")
     for a in actions(board):
         v = min(v, maxvalue(result(board, a)))
     return(v)
+
+def maxaction(board):
+    """
+    MAX picks action in ACTIONS(board) that produces highest value of MINVALUE(RESULT(board, action))
+    """
+    options = []
+    utility = []
+    #Could implement pruning by checking if current option is higher than one found previously
+    for a in actions(board):
+        options.append((a, minvalue(result(board, a))))
+        utility.append(minvalue(result(board, a)))
+    max_options = []
+    for action, value in options:
+        if value == max(utility):
+            max_options.append((action,value))
+    return(max_options[0][0]) 
+
+def minaction(board):
+    """
+    MIN picks action in ACTIONS(board) that produces smallest value of MAXVALUE(RESULT(board, action))
+    """
+    options = []
+    utility = []
+    for a in actions(board):
+        options.append((a, maxvalue(result(board, a))))
+        utility.append(maxvalue(result(board, a)))
+    min_options = []
+    for action, value in options:
+        if value == min(utility):
+            min_options.append((action,value))
+    return(min_options[0][0]) 
