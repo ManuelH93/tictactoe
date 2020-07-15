@@ -1,40 +1,34 @@
-from tictactoe import terminal, actions, result, utility, player
+from tictactoe import maxvalue, minvalue, actions, utility, result, player, terminal
 
 X = "X"
 O = "O"
 EMPTY = None
 
-board = [[EMPTY, X, O],
-         [O, X, EMPTY],
-         [X, EMPTY, O]]
+board = [[EMPTY, EMPTY, EMPTY],
+         [EMPTY, EMPTY, EMPTY],
+         [EMPTY, EMPTY, EMPTY]]
 
-def maxvalue(board):
-    """
-    MAXVALUE picks action in ACTIONS(board) that produces highest value of MINVALUE(RESULT(board, action))
-    """
-
-    if terminal(board) == True:
-        return(utility(board))
-    
-    v = float("-inf")
-    for a in actions(board):
-        v = max(v, minvalue(result(board, a)))
-    return(v)
-
-def minvalue(board):
-    """
-    MINVALUE picks action in ACTIONS(board) that produces lowest value of MAXVALUE(RESULT(board, action))
-    """
-   
-    if terminal(board) == True:
-        return(utility(board))
-    
-    v = float("inf")
-    for a in actions(board):
-        v = min(v, maxvalue(result(board, a)))
-    return(v)
-
-print(terminal(board))
 print(player(board))
-print(maxvalue(board))
-print(minvalue(board))
+
+if terminal(board) == True:
+    print(None)
+elif player(board) == X:
+    options = []
+    utility = []
+    for a in actions(board):
+        options.append((a, minvalue(result(board, a))))
+        utility.append(minvalue(result(board, a)))
+    
+    
+    for action, value in options:
+        if value == max(utility):
+            print(action)
+elif player(board) == O:
+    options = []
+    utility = []
+    for a in actions(board):
+        options.append((a, maxvalue(result(board, a))))
+        utility.append(maxvalue(result(board, a)))
+    for action, value in options:
+        if value == min(utility):
+            print(action)
