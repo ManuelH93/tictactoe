@@ -170,6 +170,7 @@ def minimax(board):
     elif player(board) == O:
         return minaction(board)
 
+
 def maxvalue(board):
     """
     MAXVALUE returns maximum utility that can result from picking action in ACTIONS(board).
@@ -182,6 +183,7 @@ def maxvalue(board):
         v = max(v, minvalue(result(board, a)))
     return(v)
 
+
 def minvalue(board):
     """
     MINVALUE returns minimum utility that can result from picking action in ACTIONS(board).
@@ -189,9 +191,11 @@ def minvalue(board):
     if terminal(board) == True:
         return(utility(board))
     v = float("inf")
+    # This is where pruning needs to happen
     for a in actions(board):
         v = min(v, maxvalue(result(board, a)))
     return(v)
+
 
 def maxaction(board):
     """
@@ -208,6 +212,7 @@ def maxaction(board):
         if value == max(utility):
             max_options.append((action,value))
     return(max_options[0][0]) 
+
 
 def minaction(board):
     """
