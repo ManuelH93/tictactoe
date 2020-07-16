@@ -71,7 +71,7 @@ class Game:
         return '.'
 
     # Player 'O' is max, in this case AI
-    def max(self):
+    def max_alpha_beta(self, alpha, beta):
 
         # Possible values for maxv are:
         # -1 - loss
@@ -104,7 +104,7 @@ class Game:
                     # On the empty field player 'O' makes a move and calls Min
                     # That's one branch of the game tree.
                     self.current_state[i][j] = 'O'
-                    (m, min_i, min_j) = self.min()
+                    (m, min_i, min_j) = self.min_alpha_beta(alpha, beta)
                     # Fixing the maxv value if needed
                     if m > maxv:
                         maxv = m
@@ -112,10 +112,17 @@ class Game:
                         py = j
                     # Setting back the field to empty
                     self.current_state[i][j] = '.'
+
+                    if maxv >= beta:
+                        return (maxv, px, py)
+                    
+                    if maxv > alpha:
+                        alpha = maxv
+
         return (maxv, px, py)
 
     # Player 'X' is min, in this case human
-    def min(self):
+    def min_alpha_beta(self, alpha, beta):
 
         # Possible values for minv are:
         # -1 - win
@@ -141,16 +148,22 @@ class Game:
             for j in range(0, 3):
                 if self.current_state[i][j] == '.':
                     self.current_state[i][j] = 'X'
-                    (m, max_i, max_j) = self.max()
+                    (m, max_i, max_j) = self.max_alpha_beta(alpha, beta)
                     if m < minv:
                         minv = m
                         qx = i
                         qy = j
                     self.current_state[i][j] = '.'
 
+                    if minv <= alpha:
+                        return (minv, qx, qy)
+                    
+                    if minv < beta:
+                        beta = minv
+
         return (minv, qx, qy)
 
-    def play(self):
+    def play_alpha_beta(self):
         while True:
             self.draw_board()
             self.result = self.is_end()
@@ -173,7 +186,7 @@ class Game:
                 while True:
 
                     start = time.time()
-                    (m, qx, qy) = self.min()
+                    (m, qx, qy) = self.min_alpha_beta(-2,2)
                     end = time.time()
                     print('Evaluation time: {}s'.format(round(end - start, 7)))
                     print('Recommended move: X = {}, Y = {}'.format(qx, qy))
@@ -192,13 +205,13 @@ class Game:
 
             # If it's AI's turn
             else:
-                (m, px, py) = self.max()
+                (m, px, py) = self.max_alpha_beta(-2,2)
                 self.current_state[px][py] = 'O'
                 self.player_turn = 'X'
 
 def main():
     g = Game()
-    g.play()
+    g.play_alpha_beta()
 
 if __name__ == "__main__":
     main()
