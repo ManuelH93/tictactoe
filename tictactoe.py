@@ -53,7 +53,6 @@ def actions(board):
         for j in range(3):
             if board[i][j] == EMPTY:
                 moves.add((i,j))
-
     return moves
 
 
@@ -73,7 +72,6 @@ def result(board, action):
                 new[i][j] = X
             elif (i,j) == action and player(board) == O:
                 new[i][j] = O
-
     return new
 
 
@@ -107,8 +105,7 @@ def winner(board):
         elif board[0][1] == a and board[1][1] == a and board[2][1] == a:
             winner = a
         elif board[0][2] == a and board[1][2] == a and board[2][2] == a:
-            winner = a
-        
+            winner = a  
     return winner
 
 
@@ -134,7 +131,6 @@ def terminal(board):
         game_over = False
     else:
         game_over = True
-
     return game_over
 
 
@@ -152,7 +148,6 @@ def utility(board):
         utility = -1
     else:
         utility = 0
-
     return utility
 
 
