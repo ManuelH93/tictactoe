@@ -24,7 +24,6 @@ def player(board):
     """
     Returns player who has the next turn on a board.
     """
-    
     # Start counter for number of moves already made
     num_X = 0
     num_O = 0
@@ -48,7 +47,6 @@ def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
-
     # Initialize set to collect all empty cells 
     moves = set()
 
