@@ -1,3 +1,8 @@
+# Disclaimer:
+# Code taken from
+# https://stackabuse.com/minimax-and-alpha-beta-pruning-in-python/
+
+
 # We'll use the time module to measure the time of evaluating
 # game tree in every move. It's a nice way to show the
 # distinction between the basic Minimax and Minimax with
