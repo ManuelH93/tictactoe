@@ -4,6 +4,7 @@ Tic Tac Toe Player
 
 import math
 import copy
+import random
 
 X = "X"
 O = "O"
@@ -175,8 +176,10 @@ def maxvalue(board, alpha, beta):
     """
     MAXVALUE returns maximum utility that can result from picking action in ACTIONS(board).
     """
+    # return utility if game finished
     if terminal(board) == True:
         return(utility(board))
+    # find maxvalue through iterative process with minvalue function using pruning
     maxv = float("-inf")
     for a in actions(board):
         maxv = max(maxv, minvalue(result(board, a), alpha, beta))
@@ -190,8 +193,10 @@ def minvalue(board, alpha, beta):
     """
     MINVALUE returns minimum utility that can result from picking action in ACTIONS(board).
     """
+    # return utility if game finished
     if terminal(board) == True:
         return(utility(board))
+    # find maxvalue through iterative process with minvalue function using pruning
     minv = float("inf")
     for a in actions(board):
         minv = min(minv, maxvalue(result(board, a), alpha, beta))
@@ -206,30 +211,37 @@ def maxaction(board):
     """
     MAX picks action in ACTIONS(board) that produces highest value of MINVALUE(RESULT(board, action))
     """
+    # for all possible actions, collect the minvalue of the resulting board
     options = []
-    utility = []
-    #Could implement pruning by checking if current option is higher than one found previously
     for a in actions(board):
         options.append((a, minvalue(result(board, a), float("-inf"), float("inf"))))
-        utility.append(minvalue(result(board, a), float("-inf"), float("inf")))
+    # extract utility (minvalues)
+    utility = []
+    for a, b in options:
+        utility.append(b)
+   # select options with highest minvalue
     max_options = []
     for action, value in options:
         if value == max(utility):
-            max_options.append((action, value))
-    return(max_options[0][0]) 
+            max_options.append(action)
+    return(random.choice(max_options)) 
 
 
 def minaction(board):
     """
     MIN picks action in ACTIONS(board) that produces smallest value of MAXVALUE(RESULT(board, action))
     """
+    # for all possible actions, collect the maxvalue of the resulting board
     options = []
-    utility = []
     for a in actions(board):
         options.append((a, maxvalue(result(board, a), float("-inf"), float("inf"))))
-        utility.append(maxvalue(result(board, a), float("-inf"), float("inf")))
+    # extract utility (maxvalues)
+    utility = []
+    for a, b in options:
+        utility.append(b)
+    # select options with lowest maxvalue
     min_options = []
     for action, value in options:
         if value == min(utility):
-            min_options.append((action, value))
-    return(min_options[0][0]) 
+            min_options.append(action)
+    return(random.choice(min_options)) 
