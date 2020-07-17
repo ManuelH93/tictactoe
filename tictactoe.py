@@ -171,30 +171,35 @@ def minimax(board):
         return minaction(board)
 
 
-def maxvalue(board):
+def maxvalue(board, alpha, beta):
     """
     MAXVALUE returns maximum utility that can result from picking action in ACTIONS(board).
     """
     if terminal(board) == True:
         return(utility(board))
-    v = float("-inf")
-    #@MH: Could do pruning by checking if value can result in higher value?
+    maxv = float("-inf")
     for a in actions(board):
-        v = max(v, minvalue(result(board, a)))
-    return(v)
+        maxv = max(maxv, minvalue(result(board, a), alpha, beta))
+        if maxv > beta:
+            return maxv
+        if maxv > alpha:
+            alpha = maxv
+    return maxv
 
-
-def minvalue(board):
+def minvalue(board, alpha, beta):
     """
     MINVALUE returns minimum utility that can result from picking action in ACTIONS(board).
     """
     if terminal(board) == True:
         return(utility(board))
-    v = float("inf")
-    # This is where pruning needs to happen
+    minv = float("inf")
     for a in actions(board):
-        v = min(v, maxvalue(result(board, a)))
-    return(v)
+        minv = min(minv, maxvalue(result(board, a), alpha, beta))
+        if minv < alpha:
+            return minv
+        if minv < beta:
+            beta = minv
+    return minv
 
 
 def maxaction(board):
@@ -205,12 +210,12 @@ def maxaction(board):
     utility = []
     #Could implement pruning by checking if current option is higher than one found previously
     for a in actions(board):
-        options.append((a, minvalue(result(board, a))))
-        utility.append(minvalue(result(board, a)))
+        options.append((a, minvalue(result(board, a), float("-inf"), float("inf"))))
+        utility.append(minvalue(result(board, a), float("-inf"), float("inf")))
     max_options = []
     for action, value in options:
         if value == max(utility):
-            max_options.append((action,value))
+            max_options.append((action, value))
     return(max_options[0][0]) 
 
 
@@ -221,10 +226,10 @@ def minaction(board):
     options = []
     utility = []
     for a in actions(board):
-        options.append((a, maxvalue(result(board, a))))
-        utility.append(maxvalue(result(board, a)))
+        options.append((a, maxvalue(result(board, a), float("-inf"), float("inf"))))
+        utility.append(maxvalue(result(board, a), float("-inf"), float("inf")))
     min_options = []
     for action, value in options:
         if value == min(utility):
-            min_options.append((action,value))
+            min_options.append((action, value))
     return(min_options[0][0]) 
