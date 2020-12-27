@@ -1,7 +1,7 @@
 """
 Tic Tac Toe Player
 """
-print('test')
+
 import math, copy, random
 
 X = "X"
